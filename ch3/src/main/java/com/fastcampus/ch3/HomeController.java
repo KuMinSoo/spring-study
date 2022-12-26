@@ -1,18 +1,16 @@
 package com.fastcampus.ch3;
 
-import java.util.*;
-
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.context.*;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.*;
-import org.springframework.web.context.support.*;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Locale;
 
 //@Controller
 public class HomeController {

@@ -50,9 +50,28 @@ public class DBConnectionTest2Test1  {
         assertTrue(user2.getId().equals("s1sf"));
     }
 
+    @Test
+    public void updateUserTest() throws Exception{
+        User user=new User("s1sf","1234","asd","das@",new Date(),"face",new Date());
+        deleteAll();
+        int rowCnt=updateUser(user);
+
+        assertTrue(rowCnt==1);
+
+    }
+
     public int updateUser(User user)throws Exception{
         Connection conn=ds.getConnection();
-        String sql="update user_info set "
+        String sql="update user_info set pwd=?,name=?,email=?,sns=? where id=?";
+        PreparedStatement pstmt=conn.prepareStatement(sql);
+        pstmt.setString(1,user.getPwd());
+        pstmt.setString(2,user.getName());
+        pstmt.setString(3,user.getEmail());
+        pstmt.setString(4,user.getSns());
+        pstmt.setString(5,user.getId());
+        return pstmt.executeUpdate();
+
+
     }
 
     public int deleteUser(String id) throws Exception{
@@ -114,7 +133,38 @@ public class DBConnectionTest2Test1  {
         int rowCnt =pstmt.executeUpdate();
         return rowCnt;
     }
+    @Test
+    public void transactionTest() throws Exception{
+        Connection conn=null;
+        try {
+            deleteAll();
+            conn=ds.getConnection();
+            conn.setAutoCommit(false);
 
+
+            String sql = "insert into user_info values (?,?,?,?,?,?,now())";
+//        insert into user_info (id, pwd, name, email, birth, sns, reg_date)
+//        values ('as2112df','1234','smiet','aaa@dsf.msdkl.com','2011-11-13','facebook',now());
+            PreparedStatement pstmt=conn.prepareStatement(sql);
+            pstmt.setString(1,"asdf");
+            pstmt.setString(2,"1234");
+            pstmt.setString(3,"abc");
+            pstmt.setString(4,"asdfa@2ewq");
+            pstmt.setDate(5,new java.sql.Date(new Date().getTime()));
+            pstmt.setString(6,"fn");
+
+            int rowCnt =pstmt.executeUpdate();
+
+            pstmt.setString(1,"asdf");
+            rowCnt =pstmt.executeUpdate();
+
+            conn.commit();
+
+        } catch (Exception e) {
+            conn.rollback();
+            throw new RuntimeException(e);
+        }
+    }
     @Test
     public void springJdbcConnectionTest() throws Exception{
 //        ApplicationContext ac = new GenericXmlApplicationContext("file:src/main/webapp/WEB-INF/spring/**/root-context.xml");
