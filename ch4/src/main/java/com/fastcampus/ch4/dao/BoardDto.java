@@ -1,8 +1,11 @@
 package com.fastcampus.ch4.dao;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Date;
 import java.util.Objects;
 
+@Component
 public class BoardDto {
 
     private Integer bno;
