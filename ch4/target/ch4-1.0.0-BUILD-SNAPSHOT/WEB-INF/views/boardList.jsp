@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <title>fastcampus</title>
     <link rel="stylesheet" href="<c:url value='/css/menu.css'/>">
+    <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
 </head>
 <body>
 <div id="menu">
@@ -30,13 +31,33 @@
         <c:forEach var="board" items="${list}">
             <tr>
                 <td>${board.bno}</td>
-                <td>${board.title}</td>
+                <td><a href="<c:url value="/board/read?bno=${board.bno}&page=${page}&pageSize=${pageSize}"/> ${board.title}</a></td>
                 <td>${board.writer}</td>
                 <td>${board.reg_date}</td>
                 <td>${board.view_cnt}</td>
             </tr>
         </c:forEach>
     </table>
+    <br>
+    <div>
+        <c:if test="${ph.showPrev}">
+            <a href="<c:url value="/board/list?page=${ph.beginPage-1}&pageSize=${ph.pageSize}"/>">&lt;</td>
+        </c:if>
+        <c:forEach var="1" begin="${ph.beginPage}" end="${ph.endPage}">
+            <a href="<c:url value="/board/list?page=${i}&pageSize=${ph.pageSize}"/>">${i}</a>
+        </c:forEach>
+        <c:if test="${ph.showNext}">
+            <a href="<c:url value="/board/list?page=${ph.endPage+1}&pageSize=${ph.pageSize}"/>">&gt;</a>
+        </c:if>
+
+    </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $('#listBtn').on('click'.function(){
+            location.href="<c:url value="/board/list"/>?page=${page}&pageSize=${pageSize} ";
+        });
+ });
+</script>
 </body>
 </html>

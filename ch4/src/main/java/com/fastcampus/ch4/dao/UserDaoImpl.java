@@ -6,10 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Date;
 
 @Repository
@@ -33,7 +30,6 @@ public class UserDaoImpl implements UserDao {
 //          throw e;
         }
     }
-
     @Override
     public User selectUser(String id) throws Exception {
         User user = null;
@@ -42,6 +38,32 @@ public class UserDaoImpl implements UserDao {
         try (
                 Connection conn = ds.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
+                ResultSet rs = pstmt.executeQuery(); //  select
+        ){
+            pstmt.setString(1, id);
+
+            if (rs.next()) {
+                user = new User();
+                user.setId(rs.getString(1));
+                user.setPwd(rs.getString(2));
+                user.setName(rs.getString(3));
+                user.setEmail(rs.getString(4));
+                user.setBirth(new Date(rs.getDate(5).getTime()));
+                user.setSns(rs.getString(6));
+                user.setReg_date(new Date(rs.getTimestamp(7).getTime()));
+            }
+        }
+
+        return user;
+    }
+    @Override
+    public User selectUser2(String id) throws Exception {
+        User user = null;
+        String sql = "SELECT * FROM user_info WHERE id='"+id+"' and pwd='"+pwd+"'";
+
+        try (
+                Connection conn = ds.getConnection();
+                Statement pstmt = conn.createStatement();
                 ResultSet rs = pstmt.executeQuery(); //  select
         ){
             pstmt.setString(1, id);

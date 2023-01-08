@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <title>fastcampus</title>
     <link rel="stylesheet" href="<c:url value='/css/menu.css'/>">
+    <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
 </head>
 <body>
 <div id="menu">
@@ -18,7 +19,14 @@
         <li><a href="<c:url value='/register/add'/>">Sign in</a></li>
         <li><a href=""><i class="fas fa-search small"></i></a></li>
     </ul>
+<script>
+    let msg ="${msg}";
+    if(msg=="DEL_OK") alert("성공적으로 삭제되었습니다");
+    if(msg=="DEL_ERR") alert("삭제에 실패함");
+</script>
+
 </div><div style="text-align:center">
+    <button type="button" id="write" onclick="location.href='<c:url value="/board/write"/>'">글쓰기</button>
     <table border="1">
         <tr>
             <th>번호</th>
@@ -30,7 +38,7 @@
         <c:forEach var="board" items="${list}">
             <tr>
                 <td>${board.bno}</td>
-                <td>${board.title}</td>
+                <td><a href="<c:url value="/board/read?bno=${board.bno}&page=${page}&pageSize=${pageSize}"/> ${board.title}</a></td>
                 <td>${board.writer}</td>
                 <td>${board.reg_date}</td>
                 <td>${board.view_cnt}</td>
@@ -40,7 +48,7 @@
     <br>
     <div>
         <c:if test="${ph.showPrev}">
-            <a href="<c:url value="/board/list?page=${ph.beginPage-1}&pageSize=${ph.pageSize}"/>">&lt;</a>
+            <a href="<c:url value="/board/list?page=${ph.beginPage-1}&pageSize=${ph.pageSize}"/>">&lt;</td>
         </c:if>
         <c:forEach var="1" begin="${ph.beginPage}" end="${ph.endPage}">
             <a href="<c:url value="/board/list?page=${i}&pageSize=${ph.pageSize}"/>">${i}</a>
@@ -51,5 +59,6 @@
 
     </div>
 </div>
+
 </body>
 </html>
