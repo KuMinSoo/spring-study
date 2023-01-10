@@ -13,6 +13,9 @@ public class BoardDaoImpl implements BoardDao {
     private SqlSession session;
     private static String namespace = "com.fastcampus.ch4.dao.BoardMapper.";
 
+
+
+
     @Override
     public int count() throws Exception {
         return session.selectOne(namespace+"count");
@@ -61,6 +64,14 @@ public class BoardDaoImpl implements BoardDao {
         return session.update(namespace+"increaseViewCnt", bno);
     } // int update(String statement, Object parameter)
 
+    @Override
+    public int searchResultCnt(SearchCondition sc) throws Exception {
+        return session.selectOne(namespace+"searchResultCnt",sc);
+    } // T selectOne(String statement)
 
+    @Override
+    public List<BoardDto> searchSelectPage(SearchCondition sc) throws Exception {
+        return session.selectList(namespace+"selectPage", sc);
+    } // List<E> selectList(String statement, Object parameter)
 
 }
